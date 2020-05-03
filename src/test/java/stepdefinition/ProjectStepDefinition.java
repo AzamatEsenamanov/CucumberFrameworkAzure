@@ -16,11 +16,11 @@ import java.sql.SQLOutput;
 
 public class ProjectStepDefinition {
     WebDriver driver;
-    CommonElementMethods commonMethods;
+    CommonElementMethods commonMethods = new CommonElementMethods();
     BrowserSettings browserSettings = new BrowserSettings();
 
     @Before(order = 1)
-    public void setup(Scenario scenario) throws Exception {
+    public void setup(Scenario scenario) {
         driver = browserSettings.BrowserSettings();
     }
     @When("^(?:|we |I)enter \"([^\"]*)\" in the field$")
@@ -28,7 +28,7 @@ public class ProjectStepDefinition {
         HomePage home = new HomePage(driver);
         WebElement getHome = home.getSearchBox();
         System.out.println(getHome);
-        this.commonMethods.enterValueWhenVisible(getHome, text, 5);
+        commonMethods.enterValueWhenVisible(getHome, text, 5);
     }
     @After
     public void teardown(){
