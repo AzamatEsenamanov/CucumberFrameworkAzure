@@ -1,22 +1,25 @@
 package framework;
 
-import config.BrowserSettings;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 
 public class ElementReadyStatus {
-BrowserSettings browserSettings = new BrowserSettings();
-WebDriver driver = browserSettings.getDriver();
-protected boolean elementVisibleAndEnabled(WebElement locator, int timeout){
+    public WebDriver driver;
+    public ElementReadyStatus(WebDriver driver) {
+        this.driver = driver;
+    }
+    protected boolean elementVisibleAndEnabled(By locator, int timeout){
     try{
-        if(new WebDriverWait(driver, timeout).until(ExpectedConditions.visibilityOf(locator)).isEnabled()){
+        System.out.println("trying to locate element: "+locator+" if visible");
+
+        if(new WebDriverWait(driver, timeout).until(ExpectedConditions.visibilityOfElementLocated(locator)).isEnabled()){
             return true;
         }else{
 //            not finished, screenCaptureOnFailure
+            System.out.println("Cannot find locator");
         }
     }catch (Exception e){
         if(e.toString().contains("NullPointerException")){

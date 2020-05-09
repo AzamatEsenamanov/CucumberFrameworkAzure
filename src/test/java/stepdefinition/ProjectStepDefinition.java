@@ -1,37 +1,93 @@
 package stepdefinition;
 
-import Pages.HomePage;
-import config.BrowserSettings;
+
+import config.Base;
+import config.GetBase;
 import framework.CommonElementMethods;
 import io.cucumber.java.After;
 import io.cucumber.java.Before;
 import io.cucumber.java.Scenario;
+import io.cucumber.java.en.Given;
 import io.cucumber.java.en.When;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import locatorreaders.ILocatorReader;
+import locatorreaders.XmlLocatorReader;
+import locatorreaders.YamlLocatorReader;
+import config.PageObjectMap;
+import utilities.FileFunctions;
 
 import java.io.IOException;
-import java.sql.SQLOutput;
+import java.util.List;
+import java.util.logging.Logger;
 
 public class ProjectStepDefinition {
-    WebDriver driver;
-    CommonElementMethods commonMethods = new CommonElementMethods();
-    BrowserSettings browserSettings = new BrowserSettings();
+    private static final Logger LOGGER = Logger.getLogger(ProjectStepDefinition.class.getName());
+    private static final Integer MULTIPLIER = 1000;
+    CommonElementMethods commonMethods;
+    GetBase getBase = new GetBase();
+    Base base = new Base();
 
     @Before(order = 1)
     public void setup(Scenario scenario) {
-        driver = browserSettings.BrowserSettings();
+        this.getBase.setDriver(base.driverSettings());
+        System.out.println("setting chrom driver: "+base.getDriver());
+        this.commonMethods = new CommonElementMethods(this.getBase.getDriver());
+        System.out.println("Gettting Chrome driver: "+ getBase.getDriver());
+        System.out.println("navigatingToUrl");
+        base.navigateToURL();
     }
-    @When("^(?:|we |I)enter \"([^\"]*)\" in the field$")
-    public void we_enter(String text) throws IOException {
-        HomePage home = new HomePage(driver);
-        WebElement getHome = home.getSearchBox();
-        System.out.println(getHome);
-        commonMethods.enterValueWhenVisible(getHome, text, 5);
+    @Given("we are on {string}")
+    public void weAreOn(String name) throws Exception {
+
+        String fileSeperator = System.getProperty("file.separator");
+        System.out.println(fileSeperator);
+        String location = "src/test/resources/page_objects".replace("/", fileSeperator);
+        System.out.println(location);
+        List<String> pages = FileFunctions.listf(location); //getting list of files(full path) in all subdir
+        String msg = "Neither " + name + ".xml nor .yml were not found --plz verify that the requizite page file " +
+                "exsists in src/tests/resources/page_objects/ and is readable.";
+        boolean fileFound = false;
+        for (String page : pages) {
+            String fileType = page.substring(page.lastIndexOf('.') + 1);
+            if (page.substring(page.lastIndexOf(fileSeperator) + 1).equals(name + "." + fileType)) {
+                ILocatorReader reader;
+                if (fileType.equals("yml")) {
+                    reader = new YamlLocatorReader();
+                }else if(fileType.equals("xml")){
+                    reader = new XmlLocatorReader();
+                }else{
+                    LOGGER.severe(msg);
+                    throw new Exception("Neither " + name + ".xml nor " + name + ".yml were not found -- file type is not supported");
+                }
+                this.getBase.setPage(new PageObjectMap(
+                        (reader).read(page),
+                        this.getBase.getDriver(), this.getBase.getTimeout()));
+                fileFound = true;
+                System.out.println("Paje Object Yaml File is Found by name: "+name);
+                break;
+            }
+        }
+        if (!fileFound) {
+            LOGGER.severe(msg);
+            throw new IOException(msg);
+        }
+    }
+    @When("we enter {string} in the {string} field")
+    public void we_enter(String text, String box) throws IOException {
+        System.out.println("getting to the step when entering");
+        commonMethods.enterValueWhenVisible(this.getBase.getPage().get(box), text, 5);
+    }
+    @When("we click on {string}")
+    public void we_click(String box) throws IOException {
+        System.out.println("getting to the step when clicking");
+
+        commonMethods.clickWhenVisible(this.getBase.getPage().get(box), 5);
+    }
+    @When("we wait for {int} seconds")
+    public void we_wait(int seconds) throws IOException, InterruptedException {
+        Thread.sleep(seconds * MULTIPLIER);
     }
     @After
     public void teardown(){
-        browserSettings.tearDownAfterScenario();
+        base.tearDownAfterScenario();
     }
 }

@@ -2,10 +2,19 @@ Feature: Login
 
 @Login
 Scenario Outline: Login Page
-#Given we are on HomePage
-When we enter "<login>" in the field
-#Then we clear loginBox
+  Given we are on "HomePage"
+  When we enter "<login>" in the "searchBox" field
+  Then we click on "submitBtn"
+  And we click on "logoImage"
+  And we click on "loginTextLink"
+  Given we are on "LoginPage"
+  And we enter "<username>" in the "userNameBox" field
+  And we enter "<lastName>" in the "lastNameBox" field
+  And we enter "<password>" in the "paswordBox" field
+  And we click on "loginBtn"
+  And we wait for 2 seconds
+
 
 Examples:
-|login|loginBox|
-|12345|//input[@id='q']|
+|login|username|lastName|password|
+|USA  |username|lastName|password|

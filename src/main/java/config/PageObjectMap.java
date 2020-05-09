@@ -1,11 +1,11 @@
-package state;
+package config;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-
+import org.testng.Assert;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -14,6 +14,7 @@ public class PageObjectMap extends HashMap<String, By> {
     private static final long serialVersion = -4407519697856248682L;
     private transient WebDriver driver;
     private int timeout;
+
     //creates an instance of code PageObjectMap
 
     public PageObjectMap(Map<String, By> map, WebDriver driver, int timeout) {
@@ -35,7 +36,7 @@ public class PageObjectMap extends HashMap<String, By> {
             }
         }
         if (identifier == null) {
-//            Assert.fail("Null Object in Map or ID");
+            Assert.fail("Null Object in Map or ID");
         }
         return identifier;
     }

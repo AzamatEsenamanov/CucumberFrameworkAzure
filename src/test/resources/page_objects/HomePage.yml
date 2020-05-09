@@ -1,3 +1,6 @@
 name: HomePage
 page-objects:
-  'box': 'id:mailbox:login'
+  'searchBox': 'id:aa-search-field'
+  'submitBtn': "xpath://button[@id='aa-search-button']/span"
+  'logoImage': "xpath://a[@class='aa-logo span4 span-phone9']"
+  'loginTextLink': 'id:loginLogoutLink'

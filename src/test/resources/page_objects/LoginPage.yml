@@ -1,0 +1,6 @@
+name: LoginPage
+page-objects:
+  'userNameBox': 'id:loginId'
+  'lastNameBox': 'id:lastName'
+  'passwordBox': 'id:password'
+  'loginBtn':    'id:button_login'
