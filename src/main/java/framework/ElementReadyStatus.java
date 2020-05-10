@@ -13,8 +13,6 @@ public class ElementReadyStatus {
     }
     protected boolean elementVisibleAndEnabled(By locator, int timeout){
     try{
-        System.out.println("trying to locate element: "+locator+" if visible");
-
         if(new WebDriverWait(driver, timeout).until(ExpectedConditions.visibilityOfElementLocated(locator)).isEnabled()){
             return true;
         }else{

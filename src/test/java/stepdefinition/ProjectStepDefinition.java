@@ -29,19 +29,14 @@ public class ProjectStepDefinition {
     @Before(order = 1)
     public void setup(Scenario scenario) {
         this.getBase.setDriver(base.driverSettings());
-        System.out.println("setting chrom driver: "+base.getDriver());
         this.commonMethods = new CommonElementMethods(this.getBase.getDriver());
-        System.out.println("Gettting Chrome driver: "+ getBase.getDriver());
-        System.out.println("navigatingToUrl");
         base.navigateToURL();
     }
     @Given("we are on {string}")
     public void weAreOn(String name) throws Exception {
 
         String fileSeperator = System.getProperty("file.separator");
-        System.out.println(fileSeperator);
         String location = "src/test/resources/page_objects".replace("/", fileSeperator);
-        System.out.println(location);
         List<String> pages = FileFunctions.listf(location); //getting list of files(full path) in all subdir
         String msg = "Neither " + name + ".xml nor .yml were not found --plz verify that the requizite page file " +
                 "exsists in src/tests/resources/page_objects/ and is readable.";
@@ -62,7 +57,6 @@ public class ProjectStepDefinition {
                         (reader).read(page),
                         this.getBase.getDriver(), this.getBase.getTimeout()));
                 fileFound = true;
-                System.out.println("Paje Object Yaml File is Found by name: "+name);
                 break;
             }
         }
@@ -73,13 +67,10 @@ public class ProjectStepDefinition {
     }
     @When("we enter {string} in the {string} field")
     public void we_enter(String text, String box) throws IOException {
-        System.out.println("getting to the step when entering");
         commonMethods.enterValueWhenVisible(this.getBase.getPage().get(box), text, 5);
     }
     @When("we click on {string}")
     public void we_click(String box) throws IOException {
-        System.out.println("getting to the step when clicking");
-
         commonMethods.clickWhenVisible(this.getBase.getPage().get(box), 5);
     }
     @When("we wait for {int} seconds")

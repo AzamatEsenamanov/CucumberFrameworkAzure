@@ -10,7 +10,7 @@ Scenario Outline: Login Page
   Given we are on "LoginPage"
   And we enter "<username>" in the "userNameBox" field
   And we enter "<lastName>" in the "lastNameBox" field
-  And we enter "<password>" in the "paswordBox" field
+  And we enter "<password>" in the "passwordBox" field
   And we click on "loginBtn"
   And we wait for 2 seconds
 

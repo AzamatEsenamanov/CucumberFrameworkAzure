@@ -13,13 +13,11 @@ import java.util.Map;
 
 //implementation for ILocator interface
 public class YamlLocatorReader implements ILocatorReader {
-
     // Page POJO for easy deserialization from yaml
     public static class YamlPage extends AbstractPage {
         @JsonProperty("name")
         private String name;
         private Map<String, By> pageObjects;
-
         public Map<String, By> getPageObjects() {
             return this.pageObjects;
         }
@@ -29,35 +27,24 @@ public class YamlLocatorReader implements ILocatorReader {
             pageObjects =new HashMap<>();
             for(Map.Entry<String, Object> pageObject: objects.entrySet()){
                 String key = pageObject.getKey();
-                System.out.println("key: "+key);
                 By value;
-
                 //returns value of xpath/id/name "xpath://*[contains.....]"
                 String valOfAlias = (String)pageObject.getValue();
-                System.out.println("valOfAlias: "+valOfAlias);
                 int index = valOfAlias.indexOf(":");
-                System.out.println("index: "+index);
                 if(index > -1){
                     String typeOfElement = valOfAlias.substring(0, index).trim();
-                    System.out.println("typeOfElement: "+typeOfElement);
                     String elementValue = valOfAlias.substring(index+1).trim();
-                    System.out.println("elementValue: "+elementValue);
                     value = super.getLocator(typeOfElement, elementValue);
-                    System.out.println(value.toString());
                 }else{
                     throw new IOException("Error: no colon found separating identifier from type: "+valOfAlias);
                 }
-                System.out.println("key: "+key);
-                System.out.println("returned value: "+value);
                 pageObjects.put(key, value);
             }
-
         }
         public String toString(){
             return name+ pageObjects;
         }
     }
-
     @Override
     public Map<String, By> read(String fileName) throws Exception {
         ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
