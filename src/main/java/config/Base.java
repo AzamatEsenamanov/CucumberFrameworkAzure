@@ -1,5 +1,6 @@
 package config;
 
+import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 
@@ -45,8 +46,9 @@ public class Base {
         }
     }
     public WebDriver driverSettings() {
-        String path = System.getProperty("user.dir");
-        System.setProperty("webdriver.chrome.driver",path +"\\src\\main\\resources\\drivers\\chromedriver.exe");
+//        String path = System.getProperty("user.dir");
+//        System.setProperty("webdriver.chrome.driver",path +"\\src\\main\\resources\\drivers\\chromedriver.exe");
+        WebDriverManager.chromedriver().setup();
         driver = new ChromeDriver();
         return driver;
     }
