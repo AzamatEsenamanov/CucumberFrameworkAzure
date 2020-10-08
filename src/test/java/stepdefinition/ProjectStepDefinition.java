@@ -19,7 +19,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.logging.Logger;
 
-public class ProjectStepDefinition {
+public class ProjectStepDefinition{
     private static final Logger LOGGER = Logger.getLogger(ProjectStepDefinition.class.getName());
     private static final Integer MULTIPLIER = 1000;
     CommonElementMethods commonMethods;

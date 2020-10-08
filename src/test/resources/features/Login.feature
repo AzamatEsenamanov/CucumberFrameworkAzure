@@ -1,6 +1,10 @@
 Feature: Login
 
 @Login
+@Regression
+@May
+@S-31234
+
 Scenario Outline: Login Page
   Given we are on "HomePage"
   When we enter "<login>" in the "searchBox" field
