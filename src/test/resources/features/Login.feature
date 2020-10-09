@@ -8,7 +8,7 @@ Feature: Login
 Scenario Outline: Login Page
   Given we are on "HomePage"
   When we enter "<login>" in the "searchBox" field
-  Then we click on "submitBtn"
+  Then we click on "submitdBtn"
   And we click on "logoImage"
   And we click on "loginTextLink"
   Given we are on "LoginPage"
